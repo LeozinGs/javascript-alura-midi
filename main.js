@@ -2,10 +2,20 @@
 function tocarSom(nomeInstrumento) {
 
     //Cria a constante que pega o som desejado usando como parâmetro o próprio nome da tecla.
-    const som = document.querySelector(`#som_${nomeInstrumento}`);
+    const som = document.querySelector(nomeInstrumento);
 
-    //Da play no som.
-    som.play();
+    //Verificando se o elemento é nulo ou se contém um elemento audio.
+    if (som != null && som.localName === 'audio') {
+
+        som.play();
+
+    } 
+    //Caso as duas condições anteriores forem falsas.
+    else {
+
+        alert('Elemento não encontrado!');
+
+    }
 
 }
 
@@ -22,7 +32,7 @@ for (let i = 0; i < listaDeTeclas.length; i++) {
     const tecla = listaDeTeclas[i];
 
     //Adiciona o nome da classe à variável, dividindo os dois nome e pegando só aquele que será usado como parâmetro.
-    instrumento.push(tecla.classList[1]);
+    instrumento.push(`#som_${tecla.classList[1]}`);
 
     //Adiciona o atributo onclick nos botões usando uma arrow function(Lambda) para adicionar o parâmetro na função chamada no onclick.
     tecla.onclick = () => {
@@ -31,4 +41,24 @@ for (let i = 0; i < listaDeTeclas.length; i++) {
         tocarSom(instrumento[i]);
 
     }
+
+    //Quando a tecla estiver apertada, adiciona o estilo 'ativo'.
+    tecla.onkeydown = (e) => {
+
+        //Condicional para saber se o Enter ou a Barra de Espaço foi apertada.
+        if (e.code === 'Enter' || e.code === 'Space') {
+
+            tecla.classList.add('ativa');
+
+        }
+
+    }
+
+    //Quando a tecla não está mais sendo apertada, remove o estilo 'ativo'.
+    tecla.onkeyup = () => {
+
+        tecla.classList.remove('ativa');
+
+    }
+
 }
